@@ -10,6 +10,7 @@ import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.wordpress.android.editor.EditorFragment;
 import org.wordpress.android.editor.EditorFragmentAbstract;
 import org.wordpress.android.editor.EditorFragmentAbstract.EditorDragAndDropListener;
 import org.wordpress.android.editor.EditorFragmentAbstract.EditorFragmentListener;
@@ -66,11 +67,23 @@ public class EditorExampleActivity extends AppCompatActivity implements EditorFr
         mFailedUploads = new HashMap<>();
     }
 
+    public void onClickPreview(View view) {
+        try {
+            String content = mEditorFragment.getContent().toString();
+            Intent intent = new Intent(this, PreviewActivity.class);
+            intent.putExtra("data", content);
+            startActivity(intent);
+        } catch (EditorFragment.IllegalEditorStateException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
         if (fragment instanceof EditorFragmentAbstract) {
             mEditorFragment = (EditorFragmentAbstract) fragment;
+            mEditorFragment.setDebugModeEnabled(true);
         }
     }
 
@@ -345,4 +358,6 @@ public class EditorExampleActivity extends AppCompatActivity implements EditorFr
     public void onRequestDragAndDropPermissions(DragEvent dragEvent) {
         // TODO
     }
+
+
 }

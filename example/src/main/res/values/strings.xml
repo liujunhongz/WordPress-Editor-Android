@@ -18,4 +18,5 @@
     <string name="select_video">Select a video</string>
     <string name="select_video_fail">Select a video (failure demo)</string>
     <string name="select_image_slow_network">Select an image (slow network demo)</string>
+    <string name="post_not_found">An error occurred when loading the post. Refresh your posts and try again.</string>
 </resources>
