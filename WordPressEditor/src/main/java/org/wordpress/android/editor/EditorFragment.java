@@ -2,8 +2,6 @@ package org.wordpress.android.editor;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ContentResolver;
@@ -37,18 +35,15 @@ import android.widget.ToggleButton;
 
 import com.android.volley.toolbox.ImageLoader;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.wordpress.android.editor.EditorWebViewAbstract.ErrorListener;
 import org.wordpress.android.util.AppLog;
 import org.wordpress.android.util.AppLog.T;
 import org.wordpress.android.util.DisplayUtils;
-import org.wordpress.android.util.JSONUtils;
 import org.wordpress.android.util.ProfilingUtils;
 import org.wordpress.android.util.ShortcodeUtils;
 import org.wordpress.android.util.StringUtils;
 import org.wordpress.android.util.ToastUtils;
-import org.wordpress.android.util.UrlUtils;
 import org.wordpress.android.util.helpers.MediaFile;
 import org.wordpress.android.util.helpers.MediaGallery;
 
@@ -1385,64 +1380,64 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
                 });
                 break;
             default:
-                if (!mediaType.equals(MediaType.IMAGE)) {
-                    return;
-                }
-
-                // Only show image options fragment for image taps
-                FragmentManager fragmentManager = getFragmentManager();
-
-                if (fragmentManager.findFragmentByTag(ImageSettingsDialogFragment.IMAGE_SETTINGS_DIALOG_TAG) != null) {
-                    return;
-                }
-                mEditorFragmentListener.onTrackableEvent(TrackableEvent.IMAGE_EDITED);
-                ImageSettingsDialogFragment imageSettingsDialogFragment = new ImageSettingsDialogFragment();
-                imageSettingsDialogFragment.setTargetFragment(this,
-                        ImageSettingsDialogFragment.IMAGE_SETTINGS_DIALOG_REQUEST_CODE);
-
-                Bundle dialogBundle = new Bundle();
-
-                dialogBundle.putString("maxWidth", mBlogSettingMaxImageWidth);
-                dialogBundle.putBoolean("featuredImageSupported", mFeaturedImageSupported);
-
-                // Request and add an authorization header for HTTPS images
-                // Use https:// when requesting the auth header, in case the image is incorrectly using http://.
-                // If an auth header is returned, force https:// for the actual HTTP request.
-                HashMap<String, String> headerMap = new HashMap<>();
-                if (mCustomHttpHeaders != null) {
-                    headerMap.putAll(mCustomHttpHeaders);
-                }
-
-                try {
-                    final String imageSrc = meta.getString("src");
-                    String authHeader = mEditorFragmentListener.onAuthHeaderRequested(UrlUtils.makeHttps(imageSrc));
-                    if (authHeader.length() > 0) {
-                        meta.put("src", UrlUtils.makeHttps(imageSrc));
-                        headerMap.put("Authorization", authHeader);
-                    }
-                } catch (JSONException e) {
-                    AppLog.e(T.EDITOR, "Could not retrieve image url from JSON metadata");
-                }
-                dialogBundle.putSerializable("headerMap", headerMap);
-
-                dialogBundle.putString("imageMeta", meta.toString());
-
-                String imageId = JSONUtils.getString(meta, "attachment_id");
-                if (!imageId.isEmpty()) {
-                    dialogBundle.putBoolean("isFeatured", mFeaturedImageId == Integer.parseInt(imageId));
-                }
-
-                imageSettingsDialogFragment.setArguments(dialogBundle);
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-
-                fragmentTransaction.add(android.R.id.content, imageSettingsDialogFragment,
-                        ImageSettingsDialogFragment.IMAGE_SETTINGS_DIALOG_TAG)
-                        .addToBackStack(null)
-                        .commit();
-
-                mWebView.notifyVisibilityChanged(false);
+//                if (!mediaType.equals(MediaType.IMAGE)) {
+//                    return;
+//                }
+//
+//                // Only show image options fragment for image taps
+//                FragmentManager fragmentManager = getFragmentManager();
+//
+//                if (fragmentManager.findFragmentByTag(ImageSettingsDialogFragment.IMAGE_SETTINGS_DIALOG_TAG) != null) {
+//                    return;
+//                }
+//                mEditorFragmentListener.onTrackableEvent(TrackableEvent.IMAGE_EDITED);
+//                ImageSettingsDialogFragment imageSettingsDialogFragment = new ImageSettingsDialogFragment();
+//                imageSettingsDialogFragment.setTargetFragment(this,
+//                        ImageSettingsDialogFragment.IMAGE_SETTINGS_DIALOG_REQUEST_CODE);
+//
+//                Bundle dialogBundle = new Bundle();
+//
+//                dialogBundle.putString("maxWidth", mBlogSettingMaxImageWidth);
+//                dialogBundle.putBoolean("featuredImageSupported", mFeaturedImageSupported);
+//
+//                // Request and add an authorization header for HTTPS images
+//                // Use https:// when requesting the auth header, in case the image is incorrectly using http://.
+//                // If an auth header is returned, force https:// for the actual HTTP request.
+//                HashMap<String, String> headerMap = new HashMap<>();
+//                if (mCustomHttpHeaders != null) {
+//                    headerMap.putAll(mCustomHttpHeaders);
+//                }
+//
+//                try {
+//                    final String imageSrc = meta.getString("src");
+//                    String authHeader = mEditorFragmentListener.onAuthHeaderRequested(UrlUtils.makeHttps(imageSrc));
+//                    if (authHeader.length() > 0) {
+//                        meta.put("src", UrlUtils.makeHttps(imageSrc));
+//                        headerMap.put("Authorization", authHeader);
+//                    }
+//                } catch (JSONException e) {
+//                    AppLog.e(T.EDITOR, "Could not retrieve image url from JSON metadata");
+//                }
+//                dialogBundle.putSerializable("headerMap", headerMap);
+//
+//                dialogBundle.putString("imageMeta", meta.toString());
+//
+//                String imageId = JSONUtils.getString(meta, "attachment_id");
+//                if (!imageId.isEmpty()) {
+//                    dialogBundle.putBoolean("isFeatured", mFeaturedImageId == Integer.parseInt(imageId));
+//                }
+//
+//                imageSettingsDialogFragment.setArguments(dialogBundle);
+//
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//
+//                fragmentTransaction.add(android.R.id.content, imageSettingsDialogFragment,
+//                        ImageSettingsDialogFragment.IMAGE_SETTINGS_DIALOG_TAG)
+//                        .addToBackStack(null)
+//                        .commit();
+//
+//                mWebView.notifyVisibilityChanged(false);
                 break;
         }
     }

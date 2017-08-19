@@ -1269,7 +1269,7 @@ ZSSEditor.updateImage = function(url, alt) {
 };
 
 ZSSEditor.insertImage = function(url, remoteId, alt) {
-    var html = '<img src="' + url + '" class="wp-image-' + remoteId + ' alignnone size-full';
+    var html = '<img src="' + url + '" class="wp-image-' + remoteId + ' aligncenter size-full';
     if (alt) {
         html += '" alt="' + alt;
     }
@@ -1393,7 +1393,7 @@ ZSSEditor.finishLocalImageSwap = function(image, imageNode, imageNodeIdentifier,
     imageNode.attr('src', image.src);
     // Set extra attributes and classes used by WordPress
     imageNode.attr({'width': image.width, 'height': image.height});
-    imageNode.addClass("alignnone size-full");
+    imageNode.addClass("aligncenter size-full");
     ZSSEditor.markImageUploadDone(imageNodeIdentifier);
     var joinedArguments = ZSSEditor.getJoinedFocusedFieldIdAndCaretArguments();
     ZSSEditor.callback("callback-input", joinedArguments);
@@ -2169,7 +2169,7 @@ ZSSEditor.createImageFromMeta = function( props ) {
         if ( props.align ) {
             shortcode.align = 'align' + props.align;
         } else {
-            shortcode.align = 'alignnone';
+            shortcode.align = 'aligncenter';
         }
 
         if (props.captionClassName) {
@@ -3344,44 +3344,44 @@ ZSSField.prototype.handleTapEvent = function(e) {
             this.callback('callback-link-tap', joinedArguments);
         }
 
-        if (targetNode.nodeName.toLowerCase() == 'img') {
-            // If the image is uploading, or is a local image do not select it.
-            if ( targetNode.dataset.wpid || targetNode.dataset.video_wpid ) {
-                this.sendImageTappedCallback(targetNode);
-                return;
-            }
-
-            // If we're not currently editing just return. No need to apply styles
-            // or acknowledge the tap
-            if ( this.wrappedObject.attr('contenteditable') != "true" ) {
-                return;
-            }
-
-            // Is the tapped image the image we're editing?
-            if ( targetNode == ZSSEditor.currentEditingImage ) {
-                ZSSEditor.removeImageSelectionFormatting(targetNode);
-                this.sendImageTappedCallback(targetNode);
-                return;
-            }
-
-            // If there is a selected image, deselect it. A different image was tapped.
-            if ( ZSSEditor.currentEditingImage ) {
-                ZSSEditor.removeImageSelectionFormatting(ZSSEditor.currentEditingImage);
-            }
-
-            // Format and flag the image as selected.
-            ZSSEditor.currentEditingImage = targetNode;
-            var containerNode = ZSSEditor.applyImageSelectionFormatting(targetNode);
-
-            // Move the cursor to the tapped image, to prevent scrolling to the bottom of the document when the
-            // keyboard comes up. On API 19 and below does not work properly, with the image sometimes getting removed
-            // from the post instead of the edit overlay being displayed
-            if (nativeState.androidApiLevel > 19) {
-                ZSSEditor.setFocusAfterElement(containerNode);
-            }
-
-            return;
-        }
+//        if (targetNode.nodeName.toLowerCase() == 'img') {
+//            // If the image is uploading, or is a local image do not select it.
+//            if ( targetNode.dataset.wpid || targetNode.dataset.video_wpid ) {
+//                this.sendImageTappedCallback(targetNode);
+//                return;
+//            }
+//
+//            // If we're not currently editing just return. No need to apply styles
+//            // or acknowledge the tap
+//            if ( this.wrappedObject.attr('contenteditable') != "true" ) {
+//                return;
+//            }
+//
+//            // Is the tapped image the image we're editing?
+//            if ( targetNode == ZSSEditor.currentEditingImage ) {
+//                ZSSEditor.removeImageSelectionFormatting(targetNode);
+//                this.sendImageTappedCallback(targetNode);
+//                return;
+//            }
+//
+//            // If there is a selected image, deselect it. A different image was tapped.
+//            if ( ZSSEditor.currentEditingImage ) {
+//                ZSSEditor.removeImageSelectionFormatting(ZSSEditor.currentEditingImage);
+//            }
+//
+//            // Format and flag the image as selected.
+//            ZSSEditor.currentEditingImage = targetNode;
+//            var containerNode = ZSSEditor.applyImageSelectionFormatting(targetNode);
+//
+//            // Move the cursor to the tapped image, to prevent scrolling to the bottom of the document when the
+//            // keyboard comes up. On API 19 and below does not work properly, with the image sometimes getting removed
+//            // from the post instead of the edit overlay being displayed
+//            if (nativeState.androidApiLevel > 19) {
+//                ZSSEditor.setFocusAfterElement(containerNode);
+//            }
+//
+//            return;
+//        }
 
         if (targetNode.className.indexOf('edit-overlay') != -1 || targetNode.className.indexOf('edit-content') != -1
             || targetNode.className.indexOf('edit-icon') != -1) {

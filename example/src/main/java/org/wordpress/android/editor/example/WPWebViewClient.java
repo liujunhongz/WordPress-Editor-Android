@@ -2,6 +2,7 @@ package org.wordpress.android.editor.example;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceResponse;
@@ -89,5 +90,15 @@ public class WPWebViewClient extends URLFilteredWebViewClient {
             }
         }
         return super.shouldInterceptRequest(view, stringUrl);
+    }
+
+    @Override
+    public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
+        return true;
+    }
+
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        return super.shouldOverrideUrlLoading(view, url);
     }
 }
